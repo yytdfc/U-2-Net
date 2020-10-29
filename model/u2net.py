@@ -21,7 +21,8 @@ class REBNCONV(nn.Module):
 ## upsample tensor 'src' to have the same spatial size with tensor 'tar'
 def _upsample_like(src,tar):
 
-    src = F.upsample(src,size=tar.shape[2:],mode='bilinear')
+    # src = F.upsample(src,size=tar.shape[2:],mode='bilinear')
+    src = F.interpolate(src,size=tar.shape[2:],mode='bilinear')
 
     return src
 
@@ -35,19 +36,19 @@ class RSU7(nn.Module):#UNet07DRES(nn.Module):
         self.rebnconvin = REBNCONV(in_ch,out_ch,dirate=1)
 
         self.rebnconv1 = REBNCONV(out_ch,mid_ch,dirate=1)
-        self.pool1 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool1 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv2 = REBNCONV(mid_ch,mid_ch,dirate=1)
-        self.pool2 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool2 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv3 = REBNCONV(mid_ch,mid_ch,dirate=1)
-        self.pool3 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool3 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv4 = REBNCONV(mid_ch,mid_ch,dirate=1)
-        self.pool4 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool4 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv5 = REBNCONV(mid_ch,mid_ch,dirate=1)
-        self.pool5 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool5 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv6 = REBNCONV(mid_ch,mid_ch,dirate=1)
 
@@ -112,16 +113,16 @@ class RSU6(nn.Module):#UNet06DRES(nn.Module):
         self.rebnconvin = REBNCONV(in_ch,out_ch,dirate=1)
 
         self.rebnconv1 = REBNCONV(out_ch,mid_ch,dirate=1)
-        self.pool1 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool1 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv2 = REBNCONV(mid_ch,mid_ch,dirate=1)
-        self.pool2 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool2 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv3 = REBNCONV(mid_ch,mid_ch,dirate=1)
-        self.pool3 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool3 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv4 = REBNCONV(mid_ch,mid_ch,dirate=1)
-        self.pool4 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool4 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv5 = REBNCONV(mid_ch,mid_ch,dirate=1)
 
@@ -181,13 +182,13 @@ class RSU5(nn.Module):#UNet05DRES(nn.Module):
         self.rebnconvin = REBNCONV(in_ch,out_ch,dirate=1)
 
         self.rebnconv1 = REBNCONV(out_ch,mid_ch,dirate=1)
-        self.pool1 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool1 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv2 = REBNCONV(mid_ch,mid_ch,dirate=1)
-        self.pool2 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool2 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv3 = REBNCONV(mid_ch,mid_ch,dirate=1)
-        self.pool3 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool3 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv4 = REBNCONV(mid_ch,mid_ch,dirate=1)
 
@@ -239,10 +240,10 @@ class RSU4(nn.Module):#UNet04DRES(nn.Module):
         self.rebnconvin = REBNCONV(in_ch,out_ch,dirate=1)
 
         self.rebnconv1 = REBNCONV(out_ch,mid_ch,dirate=1)
-        self.pool1 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool1 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv2 = REBNCONV(mid_ch,mid_ch,dirate=1)
-        self.pool2 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool2 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.rebnconv3 = REBNCONV(mid_ch,mid_ch,dirate=1)
 
@@ -322,19 +323,19 @@ class U2NET(nn.Module):
         super(U2NET,self).__init__()
 
         self.stage1 = RSU7(in_ch,32,64)
-        self.pool12 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool12 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.stage2 = RSU6(64,32,128)
-        self.pool23 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool23 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.stage3 = RSU5(128,64,256)
-        self.pool34 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool34 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.stage4 = RSU4(256,128,512)
-        self.pool45 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool45 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.stage5 = RSU4F(512,256,512)
-        self.pool56 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool56 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.stage6 = RSU4F(512,256,512)
 
@@ -427,19 +428,19 @@ class U2NETP(nn.Module):
         super(U2NETP,self).__init__()
 
         self.stage1 = RSU7(in_ch,16,64)
-        self.pool12 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool12 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.stage2 = RSU6(64,16,64)
-        self.pool23 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool23 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.stage3 = RSU5(64,16,64)
-        self.pool34 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool34 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.stage4 = RSU4(64,16,64)
-        self.pool45 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool45 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.stage5 = RSU4F(64,16,64)
-        self.pool56 = nn.MaxPool2d(2,stride=2,ceil_mode=True)
+        self.pool56 = nn.MaxPool2d(2,stride=2,ceil_mode=False)
 
         self.stage6 = RSU4F(64,16,64)
 
@@ -460,6 +461,7 @@ class U2NETP(nn.Module):
         self.outconv = nn.Conv2d(6,out_ch,1)
 
     def forward(self,x):
+        x = x * (1./255.) + (-0.5)
 
         hx = x
 
@@ -502,7 +504,6 @@ class U2NETP(nn.Module):
 
         hx1d = self.stage1d(torch.cat((hx2dup,hx1),1))
 
-
         #side output
         d1 = self.side1(hx1d)
 
@@ -523,4 +524,38 @@ class U2NETP(nn.Module):
 
         d0 = self.outconv(torch.cat((d1,d2,d3,d4,d5,d6),1))
 
+        out = torch.sigmoid(d0) * 256
+        argmax = F.max_pool2d(out, 4, 4, 0)
+        argmax = torch.cat([-argmax, argmax], 1)
+        argmax = converter_helper.ArgMax.apply(argmax, 1, True)
+        h_vec = converter_helper.Max.apply(argmax, 3, False)
+        w_vec = converter_helper.Max.apply(argmax, 2, False)
+
+        
+        return out, h_vec, w_vec
         return F.sigmoid(d0), F.sigmoid(d1), F.sigmoid(d2), F.sigmoid(d3), F.sigmoid(d4), F.sigmoid(d5), F.sigmoid(d6)
+
+
+if __name__=='__main__':
+    import converter_helper
+    from converter_helper import functional as F
+    converter_helper.set_convert_mode(True)
+    net = U2NETP(3,1)
+    net.load_state_dict(torch.load('./u2netp.pth', map_location='cpu'))
+    if torch.cuda.is_available():
+        net.cuda()
+    net.eval()
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    # x = torch.rand(1, 3, 512, 512, device=device)
+    x = torch.rand(1, 3, 320, 320, device=device)
+    onnx_model = converter_helper.pytorch_to_onnx(
+        net, (x), input_names=['image'],
+        output_names=['alpha', 'h_vec', 'w_vec'],
+    )
+    coreml_model = converter_helper.onnx_to_coreml(
+        onnx_model,
+        image_input_names=['image'],
+        image_output_names=['alpha'],
+    )
+    coreml_model.save('u2.mlmodel')
+    converter_helper.convert_model_to_sdk(coreml_model, 'u2')
